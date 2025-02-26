@@ -10,7 +10,6 @@ cd $SCRIPT_DIR/..
 
 # Download latest Oryx keymap and commit to oryx branch
 
-git checkout -B oryx origin/oryx
 
 hashId=$(jq -r .'layout' $SCRIPT_DIR/../config.json)
 
@@ -18,6 +17,7 @@ geometry=$(jq -r .'geometry' $SCRIPT_DIR/../config.json)
 
 response=$(curl --location 'https://oryx.zsa.io/graphql' --header 'Content-Type: application/json' --data '{"query":"query getLayout($hashId: String!, $revisionId: String!, $geometry: String) {layout(hashId: $hashId, geometry: $geometry, revisionId: $revisionId) {  revision { hashId, qmkVersion, title }}}","variables":{"hashId":"'$hashId'","geometry":"'$geometry'","revisionId":"latest"}}' | jq '.data.layout.revision | [.hashId, .qmkVersion, .title]')
 
+git checkout -B oryx origin/oryx
 hash_id=$(echo "${response}" | jq -r '.[0]')
 firmware_version=$(printf "%.0f" $(echo "${response}" | jq -r '.[1]'))
 change_description=$(echo "${response}" | jq -r '.[2]')
