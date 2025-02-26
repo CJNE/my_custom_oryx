@@ -219,6 +219,11 @@ bool get_chordal_hold(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record,
     uint16_t other_keycode, keyrecord_t* other_record) {
     // Eliminate opt-r and opt-i from holds
     switch (tap_hold_keycode) {
+        case MT(MOD_LGUI, KC_BSPC):
+            if (other_keycode == KC_TAB) {
+              return false;
+          }
+          break;
         case MT(MOD_LALT, KC_A):
             if (other_keycode == KC_R) {
             return false;
