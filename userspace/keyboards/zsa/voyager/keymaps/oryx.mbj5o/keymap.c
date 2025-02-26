@@ -213,4 +213,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 
+/* Johan */
 
+bool get_chordal_hold(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record,
+    uint16_t other_keycode, keyrecord_t* other_record) {
+    // Eliminate opt-r and opt-i from holds
+    switch (tap_hold_keycode) {
+        case MT(MOD_LALT, KC_A):
+            if (other_keycode == KC_R) {
+            return false;
+            }
+            break;
+        case MT(MOD_RALT, KC_O):
+            if (other_keycode == KC_I) {
+            return true;
+            }
+            break;
+            }
+    // Otherwise defer to the opposite hands rule.
+    return get_chordal_hold_default(tap_hold_record, other_record);
+}
